@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verificador de Força de Senha</title>
+  <style>
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  text-align: center;
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#resultado {
+  text-align: left;
+}
+
+#forca-senha {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+#forca {
+  color: #e74c3c; /* Cor para senha fraca */
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  margin: 5px 0;
+}
+
+li.atendido {
+  color: green;
+}
+
+li.nao-atendido {
+  color: red;
+}
+
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Verificador de Força de Senha</h2>
+    <input type="password" id="senha" placeholder="Digite sua senha" oninput="avaliarSenha()">
+    
+    <div id="resultado">
+      <p id="forca-senha">Força da senha: <span id="forca">Fraca</span></p>
+      <ul id="requisitos">
+        <li id="requisito-8">Pelo menos 8 caracteres</li>
+        <li id="requisito-12">Pelo menos 12 caracteres</li>
+        <li id="requisito-maiusculas">Letras maiúsculas</li>
+        <li id="requisito-minusculas">Letras minúsculas</li>
+        <li id="requisito-numeros">Números</li>
+        <li id="requisito-especiais">Caracteres especiais</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>function avaliarSenha() {
+    const senha = document.getElementById('senha').value;
+    const forcaElement = document.getElementById('forca');
+    const requisitos = {
+      min8: senha.length >= 8,
+      min12: senha.length >= 12,
+      maiusculas: /[A-Z]/.test(senha),
+      minusculas: /[a-z]/.test(senha),
+      numeros: /\d/.test(senha),
+      especiais: /[^A-Za-z0-9]/.test(senha)
+    };
+  
+    // Atualiza os requisitos na tela
+    updateRequisitos(requisitos);
+  
+    // Conta quantos requisitos são atendidos
+    const requisitosAtendidos = Object.values(requisitos).filter(Boolean).length;
+  
+    // Classifica a força da senha
+    let forca = 'Fraca';
+    if (requisitosAtendidos >= 5) {
+      forca = 'Forte';
+      forcaElement.style.color = 'green';
+    } else if (requisitosAtendidos >= 3) {
+      forca = 'Média';
+      forcaElement.style.color = 'orange';
+    } else {
+      forca = 'Fraca';
+      forcaElement.style.color = 'red';
+    }
+  
+    forcaElement.textContent = `Força da senha: ${forca}`;
+  }
+  
+  function updateRequisitos(requisitos) {
+    // Atualiza o estado dos requisitos
+    for (let key in requisitos) {
+      const item = document.getElementById(`requisito-${key}`);
+      if (requisitos[key]) {
+        item.classList.add('atendido');
+        item.classList.remove('nao-atendido');
+      } else {
+        item.classList.add('nao-atendido');
+        item.classList.remove('atendido');
+      }
+    }
+  }
+  </script>
+</body>
+</html>

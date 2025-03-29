@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campo Alterna CPF/RG</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Inputmask/5.0.6/inputmask.min.js"></script>
+</head>
+<body>
+
+    <label for="documentType">Escolha o tipo de documento:</label>
+    <select id="documentType">
+        <option value="cpf">CPF</option>
+        <option value="rg">RG</option>
+    </select>
+
+    <br><br>
+
+    <label for="document">Digite o documento:</label>
+    <input type="text" id="document" placeholder="Digite o documento" />
+
+    <script>
+        // Função para aplicar a máscara conforme o tipo de documento
+        function aplicarMascara() {
+            const tipoDocumento = document.getElementById("documentType").value;
+            const campoDocumento = document.getElementById("document");
+            const im = new Inputmask();
+
+            if (tipoDocumento === "cpf") {
+                im.mask(campoDocumento);
+                campoDocumento.inputmask("999.999.999-99"); // Máscara de CPF
+            } else if (tipoDocumento === "rg") {
+                im.mask(campoDocumento);
+                campoDocumento.inputmask("99.999.999-9"); // Máscara de RG
+            }
+        }
+
+        // Definir máscara ao iniciar a página com base no valor do select
+        document.getElementById("documentType").addEventListener("change", aplicarMascara);
+        
+        // Inicializar com máscara para CPF por padrão
+        aplicarMascara();
+    </script>
+
+</body>
+</html>
